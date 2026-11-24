@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f6f1ea" />
+    <title>MVB Cursos — Estamos em construção</title>
+    <style>
+      :root {
+        --orange: #f9820d;
+        --orange-deep: #c45a08;
+        --ink: #161616;
+        --card: #ffffff;
+        --line: rgba(22, 22, 22, 0.12);
+        --muted: #5c534c;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(ellipse 70% 42% at 50% 0%, rgba(249, 130, 13, 0.16), transparent 62%),
+          #f6f1ea;
+      }
+
+      main {
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.25rem;
+        padding: max(1.5rem, env(safe-area-inset-top)) 1.25rem max(2rem, env(safe-area-inset-bottom));
+        text-align: center;
+      }
+
+      .logo {
+        display: block;
+        width: auto;
+        height: auto;
+        min-width: 0;
+        max-width: min(70vw, 420px);
+        max-height: clamp(3rem, 12vw, 5rem);
+        object-fit: contain;
+      }
+
+      .badge {
+        margin: 0;
+        padding: 0.35rem 0.8rem;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--orange-deep);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        max-width: 100%;
+        font-size: clamp(1.05rem, 5.1vw, 2.5rem);
+        font-style: italic;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        white-space: nowrap;
+      }
+
+      .lead {
+        margin: 0;
+        max-width: 38rem;
+        color: var(--muted);
+        font-size: clamp(1rem, 2.4vw, 1.125rem);
+        line-height: 1.5;
+      }
+
+      .links {
+        width: min(720px, 100%);
+        margin-top: 0.5rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+
+      .link-card {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        width: 100%;
+        min-height: 4.25rem;
+        padding: 0.85rem 1rem;
+        text-align: left;
+        text-decoration: none;
+        font: inherit;
+        color: var(--ink);
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 1rem;
+        cursor: pointer;
+        transition: background 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+      }
+
+      .link-card:hover,
+      .link-card:focus-visible {
+        background: var(--orange);
+        border-color: var(--orange);
+        color: #1a0d00;
+        transform: translateY(-2px);
+        outline: none;
+      }
+
+      .link-card:focus-visible {
+        box-shadow: 0 0 0 3px rgba(249, 130, 13, 0.45);
+      }
+
+      .icon {
+        flex: 0 0 auto;
+        width: 2.5rem;
+        height: 2.5rem;
+        display: grid;
+        place-items: center;
+        border-radius: 0.7rem;
+        background: rgba(249, 130, 13, 0.14);
+        color: var(--orange);
+      }
+
+      .link-card:hover .icon,
+      .link-card:focus-visible .icon {
+        background: rgba(0, 0, 0, 0.12);
+        color: #1a0d00;
+      }
+
+      .icon svg {
+        width: 1.35rem;
+        height: 1.35rem;
+        display: block;
+      }
+
+      .link-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.1rem;
+        min-width: 0;
+      }
+
+      .link-text strong {
+        font-size: 1rem;
+        font-weight: 700;
+      }
+
+      .link-text small {
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .link-card:hover small,
+      .link-card:focus-visible small {
+        color: rgba(26, 13, 0, 0.72);
+      }
+
+      footer {
+        margin-top: 0.5rem;
+        color: #6f675f;
+        font-size: 0.8rem;
+      }
+
+      .quiz-dialog {
+        width: min(640px, calc(100vw - 1.25rem));
+        max-height: calc(100dvh - 1.25rem);
+        margin: auto;
+        padding: 1rem;
+        border: none;
+        border-radius: 1.2rem;
+        background: #f6f1ea;
+        color: var(--ink);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+      }
+
+      .quiz-dialog::backdrop {
+        background: rgba(22, 22, 22, 0.55);
+      }
+
+      .quiz-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+      }
+
+      .quiz-bar h2 {
+        margin: 0;
+        font-size: 1.05rem;
+        text-align: left;
+      }
+
+      .quiz-close,
+      .quiz-next {
+        appearance: none;
+        border: 1px solid var(--line);
+        background: #fff;
+        color: var(--ink);
+        font: inherit;
+        font-weight: 700;
+        border-radius: 999px;
+        cursor: pointer;
+      }
+
+      .quiz-close {
+        padding: 0.4rem 0.8rem;
+      }
+
+      .quiz-progress {
+        margin: 0.85rem 0 0.35rem;
+        color: var(--orange-deep);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-align: left;
+        text-transform: uppercase;
+      }
+
+      .quiz-question {
+        margin: 0 0 0.85rem;
+        font-size: 1.15rem;
+        line-height: 1.35;
+        text-align: left;
+      }
+
+      .quiz-options {
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .quiz-option {
+        width: 100%;
+        min-height: 2.75rem;
+        padding: 0.7rem 0.85rem;
+        border: 1px solid var(--line);
+        border-radius: 0.85rem;
+        background: #fff;
+        color: var(--ink);
+        font: inherit;
+        font-size: 0.95rem;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .quiz-option:hover:not(:disabled) {
+        border-color: var(--orange);
+      }
+
+      .quiz-option.is-correct {
+        background: #e7f6ea;
+        border-color: #2f7d32;
+      }
+
+      .quiz-option.is-wrong {
+        background: #fdecec;
+        border-color: #a33b3b;
+      }
+
+      .quiz-tip {
+        margin: 0.85rem 0 0;
+        padding: 0.8rem 0.9rem;
+        border-radius: 0.85rem;
+        background: rgba(249, 130, 13, 0.14);
+        text-align: left;
+        line-height: 1.45;
+      }
+
+      .quiz-next {
+        margin-top: 0.85rem;
+        padding: 0.7rem 1.1rem;
+        background: var(--orange);
+        border-color: var(--orange);
+        color: #1a0d00;
+      }
+
+      @media (min-width: 640px) {
+        .links {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .link-card {
+          transition: none;
+        }
+
+        .link-card:hover,
+        .link-card:focus-visible {
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <img class="logo" src="logo-default.png" alt="MVB Cursos" />
+      <h1>Estamos em construção</h1>
+      <p class="lead">
+        O site está sendo atualizado. Enquanto isso, continue seus estudos pelo portal,
+        pelos aplicativos ou fale com o suporte.
+      </p>
+      <nav class="links" aria-label="Acessos disponíveis">
+        <a class="link-card" href="https://portalead.mvbcursos.com.br" target="_blank" rel="noopener noreferrer">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19V6.5A2.5 2.5 0 0 1 6.5 4H20v13.5" />
+              <path d="M4 19a2.5 2.5 0 0 1 2.5-2.5H20" />
+              <path d="M8 8h8M8 11.5h5" />
+            </svg>
+          </span>
+          <span class="link-text">
+            <strong>Portal do Aluno</strong>
+            <small>Acesse sua sala virtual</small>
+          </span>
+        </a>
+        <a class="link-card" href="https://play.google.com/store/apps/details?id=com.mvb.cursos" target="_blank" rel="noopener noreferrer">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M4.2 3.4c-.3.3-.5.8-.5 1.4v14.4c0 .6.2 1.1.5 1.4l.1.1 8-8v-.2l-8-8-.1.1zm9.2 7.9 2.2-2.2-7.7-4.4 5.5 6.6zm2.8 1.6 2.5-1.4c.7-.4.7-1.1 0-1.5l-1.9-1.1-2.4 2.4 1.8 1.6zM8 19.3l7.6-4.4-2.2-2.2L8 19.3z" />
+            </svg>
+          </span>
+          <span class="link-text">
+            <strong>App Android</strong>
+            <small>Baixar na Google Play</small>
+          </span>
+        </a>
+        <a class="link-card" href="https://apps.apple.com/br/app/mvb-cursos/id6792545681" target="_blank" rel="noopener noreferrer">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16.4 12.7c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.2-2.8.9-3.5.9s-1.8-.8-3-.8c-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.3 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7 2-1.1 2.8-2.2c.9-1.3 1.2-2.5 1.3-2.6-.1 0-2.4-.9-2.5-3.9zM14.7 6.2c.6-.8 1.1-1.9.9-3-1 .1-2.1.6-2.8 1.4-.6.7-1.2 1.8-.9 2.9 1.1.1 2.1-.5 2.8-1.3z" />
+            </svg>
+          </span>
+          <span class="link-text">
+            <strong>App iOS</strong>
+            <small>Baixar na App Store</small>
+          </span>
+        </a>
+        <a class="link-card" href="https://wa.me/556131421920?text=Ol%C3%A1" target="_blank" rel="noopener noreferrer">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12.04 2C6.58 2 2.15 6.4 2.15 11.83c0 1.74.46 3.44 1.34 4.94L2 22l5.39-1.41a10 10 0 0 0 4.65 1.14h.01c5.46 0 9.89-4.4 9.89-9.83C21.94 6.4 17.5 2 12.04 2zm5.76 13.92c-.24.68-1.4 1.3-1.94 1.38-.5.08-1.12.11-1.81-.11-.41-.14-.95-.31-1.63-.61-2.87-1.24-4.74-4.13-4.88-4.32-.14-.19-1.16-1.54-1.16-2.94s.73-2.08 1-2.37c.24-.27.64-.39 1.02-.39.12 0 .23 0 .33.01.29.01.43.03.62.48.24.57.82 1.98.89 2.12.07.15.12.32.02.51-.09.19-.14.31-.28.48-.14.17-.29.37-.42.5-.14.13-.28.28-.12.54.16.27.71 1.17 1.52 1.89 1.05.93 1.93 1.22 2.2 1.36.27.14.43.12.59-.07.16-.19.68-.79.86-1.06.18-.27.36-.22.6-.13.24.09 1.54.73 1.8.86.27.13.44.2.51.31.06.11.06.64-.18 1.32z" />
+            </svg>
+          </span>
+          <span class="link-text">
+            <strong>Suporte</strong>
+            <small>Fale no WhatsApp</small>
+          </span>
+        </a>
+        <button type="button" class="link-card" id="open-quiz">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 4h8a2 2 0 0 1 2 2v14l-6-3-6 3V6a2 2 0 0 1 2-2z" />
+              <path d="M9 9h6M9 13h4" />
+            </svg>
+          </span>
+          <span class="link-text">
+            <strong>Quiz do operador</strong>
+            <small>Máquina pesada</small>
+          </span>
+        </button>
+      </nav>
+    </main>
+
+    <dialog class="quiz-dialog" id="quiz-dialog" aria-labelledby="quiz-title">
+      <div class="quiz-bar">
+        <h2 id="quiz-title">Quiz do operador de máquina pesada</h2>
+        <button type="button" class="quiz-close" id="close-quiz">Fechar</button>
+      </div>
+      <p class="quiz-progress" id="quiz-progress"></p>
+      <h3 class="quiz-question" id="quiz-question"></h3>
+      <div class="quiz-options" id="quiz-options" role="group" aria-label="Alternativas"></div>
+      <p class="quiz-tip" id="quiz-tip" hidden></p>
+      <button type="button" class="quiz-next" id="quiz-next" hidden>Próxima</button>
+    </dialog>
+
+    <script>
+      (function () {
+        const dialog = document.getElementById("quiz-dialog");
+        const progress = document.getElementById("quiz-progress");
+        const question = document.getElementById("quiz-question");
+        const options = document.getElementById("quiz-options");
+        const tip = document.getElementById("quiz-tip");
+        const next = document.getElementById("quiz-next");
+
+        const questions = [
+          {
+            ask: "Antes de ligar a máquina, o que o operador faz?",
+            choices: [
+              "Dá a volta na máquina, confere níveis, pneus ou esteiras e se não há ninguém por perto",
+              "Acelera fundo para esquentar o motor mais rápido",
+              "Engata a marcha mais alta e sai",
+            ],
+            answer: 0,
+            tip: "A inspeção de volta evita partir com vazamento, implemento solto ou alguém na área cega.",
+          },
+          {
+            ask: "Para trocar de marcha com segurança, o operador precisa:",
+            choices: [
+              "Pisar na embreagem e só então engatar a marcha",
+              "Trocar com o acelerador fundo, sem embreagem",
+              "Puxar o freio de estacionamento com a máquina andando",
+            ],
+            answer: 0,
+            tip: "A embreagem separa o motor da transmissão. Trocar marcha com ela solta força engrenagens e pode quebrar o conjunto.",
+          },
+          {
+            ask: "Na subida, qual marcha ajuda a manter o controle?",
+            choices: [
+              "Uma marcha mais baixa, com mais força",
+              "A marcha mais alta, para pegar velocidade",
+              "Ponto morto, deixando a máquina rolar",
+            ],
+            answer: 0,
+            tip: "Marcha baixa guarda torque e o freio-motor. Ponto morto em rampa tira esse controle.",
+          },
+          {
+            ask: "O cinto de segurança na máquina pesada serve para:",
+            choices: [
+              "Manter o operador no assento, dentro da cabine protegida",
+              "Ser usado só quando a máquina entra na estrada",
+              "Substituir a estrutura contra capotamento",
+            ],
+            answer: 0,
+            tip: "A cabine protege quem permanece sentado. Sem o cinto, num tombamento o operador pode ser lançado para fora.",
+          },
+          {
+            ask: "Antes de abaixar a caçamba ou o implemento, o operador confirma:",
+            choices: [
+              "Se não há pessoas nem obstáculos embaixo ou na linha de descida",
+              "Se a marcha está na mais alta",
+              "Se o rádio da cabine está ligado",
+            ],
+            answer: 0,
+            tip: "A área de giro e o espaço sob o implemento são pontos cegos. Combine um sinal com quem está no solo.",
+          },
+          {
+            ask: "Ao estacionar a máquina, a sequência correta é:",
+            choices: [
+              "Parar, neutro, freio de estacionamento, implemento no chão e só então desligar e descer",
+              "Descer primeiro e puxar o freio de fora",
+              "Deixar engatada em uma ladeira e desligar",
+            ],
+            answer: 0,
+            tip: "Implemento apoiado no chão evita queda hidráulica. O freio de estacionamento fica acionado antes de sair da cabine.",
+          },
+          {
+            ask: "Na ré, o cuidado principal é:",
+            choices: [
+              "Olhar para trás, usar espelhos e alarme, e só mover com a área livre",
+              "Confiar apenas no espelho esquerdo",
+              "Acelerar rápido para terminar a manobra logo",
+            ],
+            answer: 0,
+            tip: "A maior parte dos atropelamentos com máquina acontece na ré. Buzina ajuda, mas a checagem visual é do operador.",
+          },
+          {
+            ask: "Se a máquina começar a tombar, o operador deve:",
+            choices: [
+              "Ficar no assento, preso pelo cinto, e não pular",
+              "Pular para o lado de baixo da queda",
+              "Soltar o cinto e sair correndo pela porta",
+            ],
+            answer: 0,
+            tip: "Pular no sentido da queda coloca o operador no caminho da própria máquina. Preso ao assento, a cabine é o lugar mais seguro.",
+          },
+        ];
+
+        let index = 0;
+        let score = 0;
+        let mode = "question";
+
+        function showQuestion() {
+          const item = questions[index];
+          progress.textContent = "Pergunta " + (index + 1) + " de " + questions.length;
+          question.textContent = item.ask;
+          options.innerHTML = "";
+          tip.hidden = true;
+          next.hidden = true;
+          item.choices.forEach((choice, choiceIndex) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "quiz-option";
+            button.textContent = choice;
+            button.addEventListener("click", () => choose(choiceIndex));
+            options.appendChild(button);
+          });
+        }
+
+        function choose(choiceIndex) {
+          const item = questions[index];
+          const buttons = [...options.children];
+          if (buttons.some((button) => button.disabled)) return;
+          buttons.forEach((button, buttonIndex) => {
+            button.disabled = true;
+            if (buttonIndex === item.answer) button.classList.add("is-correct");
+            if (buttonIndex === choiceIndex && choiceIndex !== item.answer) button.classList.add("is-wrong");
+          });
+          if (choiceIndex === item.answer) score += 1;
+          tip.hidden = false;
+          tip.textContent = (choiceIndex === item.answer ? "Certo. " : "A alternativa correta está marcada. ") + item.tip;
+          next.hidden = false;
+          next.textContent = index === questions.length - 1 ? "Ver resultado" : "Próxima";
+        }
+
+        function showScore() {
+          mode = "score";
+          progress.textContent = "Resultado";
+          question.textContent = "Você acertou " + score + " de " + questions.length + ".";
+          options.innerHTML = "";
+          tip.hidden = false;
+          tip.textContent = score === questions.length
+            ? "Mandou bem. Operação segura começa nessa checagem de todo dia."
+            : "Vale reler as dicas. Máquina pesada pede calma, marcha certa e atenção com quem está em volta.";
+          next.hidden = false;
+          next.textContent = "Tentar de novo";
+        }
+
+        document.getElementById("open-quiz").addEventListener("click", () => {
+          index = 0;
+          score = 0;
+          mode = "question";
+          showQuestion();
+          if (typeof dialog.showModal === "function") dialog.showModal();
+          else dialog.setAttribute("open", "");
+        });
+
+        document.getElementById("close-quiz").addEventListener("click", () => dialog.close());
+
+        next.addEventListener("click", () => {
+          if (mode === "score") {
+            index = 0;
+            score = 0;
+            mode = "question";
+            showQuestion();
+            return;
+          }
+          index += 1;
+          if (index >= questions.length) showScore();
+          else showQuestion();
+        });
+      })();
+    </script>
+  </body>
+</html>
